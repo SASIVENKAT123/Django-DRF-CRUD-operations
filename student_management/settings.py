@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
 from pathlib import Path
-
+from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_framework_simplejwt.token_blacklist',
     'student',
 ]
 
@@ -80,7 +83,21 @@ DATABASES = {
     }
 }
 
+REST_FRAMEWORK ={
+    'DEFAULT_AUTHENTICATION_CLASSES':[
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+    ],
+}
 
+SIMPLE_JWT ={
+    'ACCESS_TOKEN_LIFETIME':timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME':timedelta(days=1),
+
+    'ROTATE_REFRESH_TOKENS':True,
+    'BLACKLIST_AFTER_ROTATION':True,
+}
 # Password validation
 # https://docs.djangoproject.com/en/6.1/ref/settings/#auth-password-validators
 
@@ -126,3 +143,8 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+# {
+#     "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc5NTYzNjI2NiwiaWF0IjoxNzk1NTQ5ODY2LCJqdGkiOiJjNTk2MjUxMGQ4MTk0ZTAxYjAxZDUwMzQwMTQ0M2Q5NCIsInVzZXJfaWQiOiIxIn0.2UAZDgYs3gUh9w651yDLnFcbytHh-kzTcgM9cZdN86s",
+#     "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzk1NTUwMTY2LCJpYXQiOjE3OTU1NDk4NjYsImp0aSI6ImZlNDhlMWE2NWY0NjRhMWFiMmQ1MDQ3MjFlMDdkYzdkIiwidXNlcl9pZCI6IjEifQ.b5GpG6eM-NJFy_ysqcfsW0rhhpoAp_EGuDSj8XD7ClI"
+# }
